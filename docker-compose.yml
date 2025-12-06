@@ -1,0 +1,11 @@
+services:
+  simplefin-alerts:
+    build: .
+    container_name: simplefin-alerts
+    volumes:
+      - ./data:/data
+    environment:
+      - SIMPLEFIN_SETUP_TOKEN=${SIMPLEFIN_SETUP_TOKEN:-}
+      - APPRISE_URL=${APPRISE_URL:-}
+      - APPRISE_TAG=${APPRISE_TAG:-}
+    restart: "no"
