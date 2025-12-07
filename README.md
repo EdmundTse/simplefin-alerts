@@ -27,12 +27,17 @@ This tool gives a quick check for SimpleFin accounts in Error Status, with optio
    # Optional: Apprise notifications (omit to disable)
    APPRISE_URL=https://example.com/notify/apprise
    APPRISE_TAG=alerts
+   
+   # Optional: Custom schedule (default: daily at 8am)
+   SCHEDULE=0 8 * * *
    ```
 
 3. Build and run:
    ```bash
-   docker compose up --build
+   docker compose up --build -d
    ```
+
+The container runs with a built-in cron scheduler (default: daily at 8am).
 
 ### Build Docker Image Manually
 
@@ -43,25 +48,18 @@ docker build -t simplefin-alerts .
 ### Run with Environment Variables
 
 ```bash
-# First run: provide setup token and mount data folder for persistence
-docker run --rm \
+# Long-running container with built-in scheduler (default: 8am daily)
+docker run -d \
   -e SIMPLEFIN_SETUP_TOKEN="your-setup-token" \
+  -e SCHEDULE="0 8 * * *" \
   -v ./data:/data \
   simplefin-alerts
 
-# Subsequent runs: access URL is loaded from saved data
-docker run --rm \
+# Custom schedule: every 6 hours
+docker run -d \
+  -e SCHEDULE="0 */6 * * *" \
   -v ./data:/data \
-  -e APPRISE_URL="your-apprise-url" \
-  -e APPRISE_TAG="your-tag" \
   simplefin-alerts
-```
-
-### Schedule with Cron (Docker)
-
-Add to your crontab to run daily:
-```bash
-0 8 * * * docker run --rm --env-file /path/to/.env simplefin-alerts
 ```
 
 ## Local Usage (without Docker)

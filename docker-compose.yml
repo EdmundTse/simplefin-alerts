@@ -8,4 +8,5 @@ services:
       - SIMPLEFIN_SETUP_TOKEN=${SIMPLEFIN_SETUP_TOKEN:-}
       - APPRISE_URL=${APPRISE_URL:-}
       - APPRISE_TAG=${APPRISE_TAG:-}
-    restart: "no"
+      - SCHEDULE=${SCHEDULE:-0 8 * * *}
+    restart: unless-stopped
